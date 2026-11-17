@@ -1,0 +1,35 @@
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+const mongoose = require("mongoose");
+const authRoute = require("../routes/authRoutes");
+
+
+// Create Express App
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use("/api/auth", authRoute);
+
+// DOT ENV
+const PORT = process.env.PORT || 5000;
+const DB_URL = process.env.MONGO_URI;
+
+// DB CONNECTION
+mongoose.connect(DB_URL)
+    .then(() => console.log("MongoDB Connected Successfully"))
+    .catch((err) => console.log("MongoDB Connection Error:", err));
+
+// Home Route
+app.get("/", (req, res) => {
+    res.send("Ecom Server is running");
+});
+
+// Start Server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
