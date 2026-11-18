@@ -3,6 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const authRoute = require("../routes/authRoutes");
+const productRoute = require ("../routes/productRoutes")
 
 
 // Create Express App
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoute);
+app.use("/api/product", productRoute);
 
 // DOT ENV
 const PORT = process.env.PORT || 5000;
