@@ -17,7 +17,7 @@ const SignupUser = async (req, res) => {
             });
         }
 
-        // Password Hashing
+        // Hash Password
         const hashPassword = await bcrypt.hash(password, 10);
 
         // Create New User
@@ -81,7 +81,7 @@ const SignupUser = async (req, res) => {
 //         });
 //     }
 // }
-
+// Login User after error
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
