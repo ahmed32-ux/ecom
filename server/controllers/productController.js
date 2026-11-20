@@ -1,69 +1,132 @@
-const mongoose = require ("mongoose");
-const product = require ("../models/Product");
-const express = require ("express");
 
+const Product = require("../models/Product");
 
-// Add/Create New Product Here
-const createProduct = async(req, res) =>{
+// Add/Create New Product
+const createProduct = async (req, res) => {
     try {
-        const product = await product.create(req.body);
-        res.json({
+        const newProduct = await Product.create(req.body);
+
+        res.status(201).json({
             message: "New Product Created Successfully",
-            product,
+            product: newProduct,
         });
+
     } catch (error) {
-        res.status(500).json({message: "Server Error", error})
+        console.log("Create Product Error:", error);
+
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        });
     }
 };
 
-// Get All Products Here
-const getAllProducts = async(req, res) => {
+// Get All Products
+const getAllProducts = async (req, res) => {
     try {
-        const products = await product.find().sort({createdAt: -1});
-        res.json(products)
-    } catch (error) {
-        res.status(500).json({message: "Server Error", error})
-    }
-}
+        const products = await Product.find().sort({ createdAt: -1 });
 
-// Update Product Here
-const updateProduct = async(req, res) => {
+        res.status(200).json(products);
+
+    } catch (error) {
+        console.log("Get Products Error:", error);
+
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        });
+    }
+};
+
+
+const getSingleProduct = async (req, res) => {
     try {
-        const update = await product.findByIdAndUpdate(
-            req.param.id,
+        const product = await Product.findById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product Not Found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            product
+        });
+
+    } catch (error) {
+        console.log("Get Single Product Error:", error);
+
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        });
+    }
+};
+
+
+// Update Product
+const updateProduct = async (req, res) => {
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
             req.body,
-            {new: true}
+            { new: true, runValidators: true }
         );
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+                message: "Product Not Found"
+            });
+        }
+
         res.json({
             message: "Product Updated Successfully",
-            update,
+            product: updatedProduct,
         });
+
     } catch (error) {
-        res.status(500).json({message: "Server Error", error})
+        console.log("Update Product Error:", error);
+
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        });
     }
 };
 
-// Delete A Product
-
-const deleteProduct = async(req, res) =>{
+// Delete Product
+const deleteProduct = async (req, res) => {
     try {
-        const deletedProduct  = await product.findByIdAndDelete(
-            req.param.id,
-            req.body,
-            {new: true}
+        const deletedProduct = await Product.findByIdAndDelete(
+            req.params.id
         );
+
+        if (!deletedProduct) {
+            return res.status(404).json({
+                message: "Product Not Found"
+            });
+        }
+
         res.json({
             message: "Product Deleted Successfully",
-            deletedProduct ,
+            product: deletedProduct,
         });
+
     } catch (error) {
-        res.status(500).json({message: "Server Error", error})
+        console.log("Delete Product Error:", error);
+
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        });
     }
 };
 
 module.exports = {
     createProduct,
     getAllProducts,
+    getSingleProduct,
     updateProduct,
     deleteProduct
 };
