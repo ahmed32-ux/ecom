@@ -8,33 +8,28 @@ export default function ProductList() {
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        console.log("ProductList component mounted");
 
+    useEffect(() => {
         fetchProducts();
     }, []);
 
     // Fetch Products
     const fetchProducts = async () => {
         try {
-            console.log("GET API started");
-
             const response = await api.get("/product/");
-
-            console.log("GET API Response:", response.data);
 
             setProducts(
                 Array.isArray(response.data)
                     ? response.data
                     : response.data.products || []
             );
-
         } catch (error) {
             console.log("GET API Error:", error);
         } finally {
             setLoading(false);
         }
     };
+
     // Delete Product
     const handleDelete = async (id) => {
         const confirmDelete = window.confirm(
@@ -51,7 +46,6 @@ export default function ProductList() {
             );
 
             alert("Product deleted successfully!");
-
         } catch (error) {
             console.log("Delete Error:", error);
             alert("Failed to delete product.");
@@ -60,12 +54,10 @@ export default function ProductList() {
 
     return (
         <div className="min-h-screen bg-gray-100 p-6">
-
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-
                     <div>
                         <h1 className="text-3xl font-bold text-gray-800">
                             Product List
@@ -76,13 +68,24 @@ export default function ProductList() {
                         </p>
                     </div>
 
-                    <button
-                        onClick={() => navigate("/admin/products/add")}
-                        className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-medium transition"
-                    >
-                        + Add New Product
-                    </button>
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap gap-3">
 
+                        <button
+                            onClick={() => navigate("/admin/categories/add")}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg font-medium transition"
+                        >
+                            + Add Category
+                        </button>
+
+                        <button
+                            onClick={() => navigate("/admin/products/add")}
+                            className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-medium transition"
+                        >
+                            + Add New Product
+                        </button>
+
+                    </div>
                 </div>
 
                 {/* Product Count */}
@@ -108,9 +111,7 @@ export default function ProductList() {
                             No products found.
                         </p>
                     ) : (
-
                         <table className="w-full min-w-[750px] text-left">
-
                             <thead className="bg-gray-50 border-b">
                                 <tr>
                                     <th className="p-4 text-gray-600">Product</th>
@@ -122,17 +123,13 @@ export default function ProductList() {
                             </thead>
 
                             <tbody>
-
                                 {products.map((product) => (
                                     <tr
                                         key={product._id}
                                         className="border-b hover:bg-gray-50 transition"
                                     >
-
-                                        {/* Product */}
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
-
                                                 <img
                                                     src={product.image || "https://placehold.co/60x60"}
                                                     alt={product.name}
@@ -142,36 +139,31 @@ export default function ProductList() {
                                                 <span className="font-medium text-gray-800">
                                                     {product.name}
                                                 </span>
-
                                             </div>
                                         </td>
 
-                                        {/* Category */}
                                         <td className="p-4 text-gray-600">
                                             {product.category}
                                         </td>
 
-                                        {/* Price */}
                                         <td className="p-4 font-medium text-gray-800">
                                             Rs. {product.price}
                                         </td>
 
-                                        {/* Stock */}
                                         <td className="p-4">
-                                            <span className={`px-3 py-1 rounded-full text-sm ${product.stock > 0
-                                                ? "bg-green-100 text-green-700"
-                                                : "bg-red-100 text-red-700"
-                                                }`}>
+                                            <span className={`px-3 py-1 rounded-full text-sm ${
+                                                product.stock > 0
+                                                    ? "bg-green-100 text-green-700"
+                                                    : "bg-red-100 text-red-700"
+                                            }`}>
                                                 {product.stock > 0
                                                     ? `${product.stock} Available`
                                                     : "Out of Stock"}
                                             </span>
                                         </td>
 
-                                        {/* Actions */}
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
-
                                                 <button
                                                     onClick={() => navigate(`/admin/products/edit/${product._id}`)}
                                                     className="text-blue-600 hover:text-blue-800 font-medium"
@@ -185,23 +177,15 @@ export default function ProductList() {
                                                 >
                                                     Delete
                                                 </button>
-
                                             </div>
                                         </td>
-
                                     </tr>
                                 ))}
-
                             </tbody>
-
                         </table>
-
                     )}
-
                 </div>
-
             </div>
-
         </div>
     );
 }

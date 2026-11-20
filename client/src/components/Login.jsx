@@ -41,20 +41,20 @@ function Login() {
             setMsg("Login Successfully!");
 
             // Redirect to Home
-            navigate("/");
+            navigate("/admin/products");
 
         } catch (error) {
-    console.log("Full Error:", error);
-    console.log("Response:", error.response);
-    console.log("Status:", error.response?.status);
-    console.log("Message:", error.response?.data);
+            console.log("Full Error:", error);
+            console.log("Response:", error.response);
+            console.log("Status:", error.response?.status);
+            console.log("Message:", error.response?.data);
 
-    setError(
-        error.response?.data?.message ||
-        error.message ||
-        "Login Failed!"
-    );
-}
+            setError(
+                error.response?.data?.message ||
+                error.message ||
+                "Login Failed!"
+            );
+        }
     };
 
     return (

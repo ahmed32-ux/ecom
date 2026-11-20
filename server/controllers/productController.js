@@ -22,9 +22,26 @@ const createProduct = async (req, res) => {
 };
 
 // Get All Products
+// Get All Products
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().sort({ createdAt: -1 });
+        const { search, category } = req.query;
+
+        let filter = {};
+
+        if (search) {
+            filter.name = {
+                $regex: search,
+                $options: "i"
+            };
+        }
+
+        if (category && category !== "All") {
+            filter.category = category;
+        }
+
+        const products = await Product.find(filter)
+            .sort({ createdAt: -1 });
 
         res.status(200).json(products);
 

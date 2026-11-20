@@ -1,11 +1,37 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../api/axious";
 import { useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState("");
+    const [loadingCategories, setLoadingCategories] = useState(true);
+    // Fetch Categories
+    const fetchCategories = async () => {
+        try {
+            setLoadingCategories(true);
 
+            const response = await api.get("/categories");
+
+            console.log("Categories:", response.data);
+
+            const categoryList = Array.isArray(response.data)
+                ? response.data
+                : response.data.categories || [];
+
+            setCategories(categoryList);
+
+        } catch (error) {
+            console.error("Category Fetch Error:", error);
+        } finally {
+            setLoadingCategories(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
     const [product, setProduct] = useState({
         name: "",
         description: "",
@@ -176,11 +202,20 @@ export default function AddProduct() {
                             className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:border-green-500"
                             required
                         >
-                            <option value="">Select Category</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="Shoes">Shoes</option>
-                            <option value="Accessories">Accessories</option>
+                            <option value="">
+                                {loadingCategories
+                                    ? "Loading categories..."
+                                    : "Select Category"}
+                            </option>
+
+                            {categories.map((item) => (
+                                <option
+                                    key={item._id}
+                                    value={item.name}
+                                >
+                                    {item.name}
+                                </option>
+                                ))}
                         </select>
                     </div>
 
