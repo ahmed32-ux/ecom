@@ -10,7 +10,6 @@ export default function AddCategory() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    // Add Category
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -33,79 +32,130 @@ export default function AddCategory() {
             );
 
             navigate("/admin/products");
-
         } catch (err) {
             console.log("ADD CATEGORY ERROR:", err);
-            console.log("STATUS:", err.response?.status);
-            console.log("RESPONSE:", err.response?.data);
-            console.log("URL:", err.config?.baseURL + err.config?.url);
 
             setError(
                 err.response?.data?.message ||
                 err.message ||
                 "Failed to add category."
             );
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-5">
+        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-gray-50 to-green-50 flex items-center justify-center px-4 py-10">
 
-            <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-8">
+            <div className="w-full max-w-xl">
 
-                {/* Heading */}
-                <h1 className="text-3xl font-bold text-gray-800">
-                    Add New Category
-                </h1>
+                {/* Main Card */}
+                <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
 
-                <p className="text-gray-500 mt-2 mb-8">
-                    Create a new category for your store.
-                </p>
+                    {/* Top Header */}
+                    <div className="bg-gradient-to-r from-green-600 to-emerald-500 px-8 py-8 text-white">
 
-                {/* Form */}
-                <form onSubmit={handleSubmit}>
+                        <div className="flex items-center gap-4">
 
-                    <label className="block text-gray-700 font-semibold mb-2">
-                        Category Name
-                    </label>
+                            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-3xl shadow-inner">
+                                +
+                            </div>
 
-                    <input
-                        type="text"
-                        placeholder="Enter category name..."
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                    />
+                            <div>
+                                <h1 className="text-2xl sm:text-3xl font-bold">
+                                    Add New Category
+                                </h1>
 
-                    {/* Error */}
-                    {error && (
-                        <p className="text-red-500 text-sm mt-3">
-                            {error}
+                                <p className="text-green-50 text-sm mt-1">
+                                    Organize your store products
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {/* Form Content */}
+                    <div className="p-6 sm:p-9">
+
+                        <p className="text-gray-500 text-sm mb-8">
+                            Create a new category to keep your products
+                            organized and easy to discover.
                         </p>
-                    )}
 
-                    {/* Buttons */}
-                    <div className="flex gap-3 mt-7">
+                        <form onSubmit={handleSubmit}>
 
+                            {/* Category Name */}
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                Category Name
+                            </label>
+
+                            <input
+                                type="text"
+                                placeholder="e.g. Electronics, Clothing..."
+                                value={name}
+                                onChange={(e) => {
+                                    setName(e.target.value);
+                                    setError("");
+                                }}
+                                className="w-full border border-gray-200 bg-gray-50 rounded-xl px-4 py-4 text-gray-800 placeholder-gray-400 outline-none transition-all duration-300 focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-100"
+                            />
+
+                            {/* Error Message */}
+                            {error && (
+                                <div className="mt-3 flex items-center gap-2 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+                                    <span className="text-red-500">!</span>
+                                    <p className="text-red-600 text-sm">
+                                        {error}
+                                    </p>
+                                </div>
+                            )}
+
+                            {/* Action Buttons */}
+                            <div className="flex flex-col sm:flex-row gap-3 mt-8">
+
+                                <button
+                                    type="button"
+                                    onClick={() => navigate("/admin/products")}
+                                    className="flex-1 border border-gray-200 bg-white text-gray-600 py-3.5 rounded-xl font-semibold hover:bg-gray-100 hover:text-gray-800 transition-all duration-300"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="flex-1 bg-green-600 text-white py-3.5 rounded-xl font-semibold shadow-lg shadow-green-100 hover:bg-green-700 hover:shadow-green-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {loading ? "Adding..." : "+ Add Category"}
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                        {/* Divider */}
+                        <div className="border-t border-gray-100 my-7"></div>
+
+                        {/* View Categories */}
                         <button
                             type="button"
-                            onClick={() => navigate("/admin/products")}
-                            className="w-1/2 border border-gray-300 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-100 transition"
+                            onClick={() => navigate("/admin/categories")}
+                            className="w-full flex items-center justify-center gap-2 bg-indigo-50 text-indigo-600 border border-indigo-100 py-3.5 rounded-xl font-semibold hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all duration-300"
                         >
-                            Cancel
-                        </button>
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-1/2 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 disabled:opacity-50 transition"
-                        >
-                            {loading ? "Adding..." : "Add Category"}
+                            <span>☷</span>
+                            View All Categories
+                            <span>→</span>
                         </button>
 
                     </div>
+                </div>
 
-                </form>
+                {/* Footer */}
+                <p className="text-center text-gray-400 text-xs mt-6">
+                    Store Administration Panel
+                </p>
+
             </div>
         </div>
     );
