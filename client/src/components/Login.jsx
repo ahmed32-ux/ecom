@@ -42,7 +42,8 @@ function Login() {
 
             setMsg("Login Successfully!");
 
-            navigate("/admin/products");
+            // navigate("/admin/products");
+            navigate("/");
 
         } catch (error) {
             console.log("Login Error:", error);

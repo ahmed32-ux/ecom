@@ -1,6 +1,7 @@
 
+import { useEffect } from "react";
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 function Navbar({ search, setSearch }) {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -10,6 +11,17 @@ function Navbar({ search, setSearch }) {
             ? "font-semibold text-green-600"
             : "text-gray-700 hover:text-green-600"
         }`;
+    const navigate = useNavigate();
+    const [cartCount, setCartCount] = useState(0);
+    const userId = localStorage.getItem("userId");
+
+    useEffect(() => { }, [userId]);
+    const logOut = () => {
+        localStorage.clear();
+        setCartCount(0);
+        navigate("/login")
+    };
+
 
     return (
         <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white shadow-sm">
@@ -26,13 +38,13 @@ function Navbar({ search, setSearch }) {
                         Home
                     </NavLink>
 
-                    <a href="/#categories" className="text-gray-700 hover:text-green-600">
+                    <Link to="/categories" className="text-gray-700 hover:text-green-600">
                         Categories
-                    </a>
+                    </Link>
 
-                    <a href="/#products" className="text-gray-700 hover:text-green-600">
+                    <Link to="/products" className="text-gray-700 hover:text-green-600">
                         Products
-                    </a>
+                    </Link>
 
                     <Link
                         to="/about"
@@ -47,18 +59,27 @@ function Navbar({ search, setSearch }) {
                         placeholder="Search products..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-52 rounded-xl border border-gray-200 bg-white px-4 py-2 outline-none focus:border-green-500"
+                        className="w-72 rounded-xl border border-gray-200 bg-white px-4 py-2 outline-none focus:border-green-500"
                     />
                 </div>
 
+
                 {/* Right Side */}
+                
                 <div className="flex items-center gap-4">
+                    {/* cart is here */}
+                    <Link to="/cart" className="hidden rounded-full bg-blue-600 px-6 py-2.5 font-semibold text-white transition hover:bg-blue-700 sm:block">
+                        Cart🛒 ({cartCount})
+                    </Link>
+
+                    {/* Login Button here */}
                     <Link
                         to="/login"
                         className="hidden rounded-full bg-green-600 px-6 py-2.5 font-semibold text-white transition hover:bg-green-700 sm:block"
                     >
                         Login
                     </Link>
+                    
 
                     {/* Mobile Menu Button */}
                     <button
@@ -84,13 +105,13 @@ function Navbar({ search, setSearch }) {
                         Home
                     </NavLink>
 
-                    <a href="/#categories" onClick={() => setMenuOpen(false)}>
+                    <Link to="/categories" onClick={() => setMenuOpen(false)}>
                         Categories
-                    </a>
+                    </Link>
 
-                    <a href="/#products" onClick={() => setMenuOpen(false)}>
+                    <Link to="/products" onClick={() => setMenuOpen(false)}>
                         Products
-                    </a>
+                    </Link>
 
                     <Link
                         to="/about"
@@ -106,7 +127,11 @@ function Navbar({ search, setSearch }) {
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-green-500"
                     />
-
+                    {/* cart is here */}
+                    <Link to="/cart" className=" rounded-full bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700 md:block">
+                        Cart🛒 ({cartCount})
+                    </Link>
+                    {/* login button */}
                     <Link
                         to="/login"
                         onClick={() => setMenuOpen(false)}

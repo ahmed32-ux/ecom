@@ -1,5 +1,5 @@
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import api from "../../api/axious";
 
 function ProductGrid({ activeCategory = "All", search = "" }) {
@@ -8,7 +8,7 @@ function ProductGrid({ activeCategory = "All", search = "" }) {
   const [error, setError] = useState("");
 
   // Fetch Products From Backend
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -19,48 +19,63 @@ function ProductGrid({ activeCategory = "All", search = "" }) {
 
       const productList = Array.isArray(response.data)
         ? response.data
-        : response.data.products || response.data.data || [];
+        : response.data?.products ||
+          response.data?.data ||
+          [];
+
+      if (!Array.isArray(productList)) {
+        throw new Error("Invalid products data received from server.");
+      }
 
       setProducts(productList);
 
-    } catch (error) {
-      console.error("Fetch Products Error:", error.response?.data || error.message);
+    } catch (err) {
+      console.error(
+        "Fetch Products Error:",
+        err.response?.data || err.message
+      );
 
       setError(
-        error.response?.data?.message ||
+        err.response?.data?.message ||
+        err.message ||
         "Unable to load products. Please try again."
       );
+
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Fetch Products When Component Loads
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   // Search & Category Filtering
   const filteredProducts = useMemo(() => {
     const searchText = search.trim().toLowerCase();
+    const categoryText = activeCategory.trim().toLowerCase();
 
     return products.filter((product) => {
+      const productCategory = product.category?.toLowerCase() || "";
+      const productName = product.name?.toLowerCase() || "";
+      const productDescription =
+        product.description?.toLowerCase() || "";
 
       // Category Filter
       const matchesCategory =
-        activeCategory === "All" ||
-        product.category?.toLowerCase() === activeCategory.toLowerCase();
+        categoryText === "all" ||
+        productCategory === categoryText;
 
       // Search Filter
       const matchesSearch =
         !searchText ||
-        product.name?.toLowerCase().includes(searchText) ||
-        product.description?.toLowerCase().includes(searchText) ||
-        product.category?.toLowerCase().includes(searchText);
+        productName.includes(searchText) ||
+        productDescription.includes(searchText) ||
+        productCategory.includes(searchText);
 
       return matchesCategory && matchesSearch;
     });
-
   }, [products, activeCategory, search]);
 
   return (
@@ -68,7 +83,6 @@ function ProductGrid({ activeCategory = "All", search = "" }) {
       className="mx-auto max-w-7xl px-5 py-10"
       id="products"
     >
-
       {/* Heading */}
       <div className="mb-8">
         <p className="font-semibold text-green-600">
@@ -109,61 +123,67 @@ function ProductGrid({ activeCategory = "All", search = "" }) {
           </p>
 
           {filteredProducts.length > 0 ? (
-
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
               {filteredProducts.map((product) => (
-
                 <div
                   key={product._id}
                   className="overflow-hidden rounded-2xl border border-gray-100 bg-white transition hover:-translate-y-1 hover:shadow-xl"
                 >
-
                   {/* Product Image */}
                   <div className="h-56 overflow-hidden bg-gray-50">
                     <img
-                      src={product.image || "https://placehold.co/400x400"}
-                      alt={product.name}
+                      src={
+                        product.image ||
+                        "https://placehold.co/400x400"
+                      }
+                      alt={product.name || "Product"}
+                      loading="lazy"
                       className="h-full w-full object-cover transition duration-300 hover:scale-105"
                     />
                   </div>
 
                   {/* Product Details */}
-                  <div className="p-5">
-
-                    <p className="text-sm text-green-600">
-                      {product.category}
+                  <div className="p-2">
+                    <p className="text-sm text-white text-center py-1.5 rounded-lg bg-gray-500">
+                      {product.category || "Uncategorized"}
                     </p>
 
                     <h3 className="mt-2 text-lg font-bold">
-                      {product.name}
+                      {product.name || "Unnamed Product"}
                     </h3>
 
                     <p className="mt-2 line-clamp-2 text-sm text-gray-500">
-                      {product.description}
+                      {product.description || "No description available."}
                     </p>
 
-                    <div className="mt-4">
+                    {/* Price */}
+                    <div className="mt-4 flex items-center justify-between">
                       <span className="text-xl font-bold text-green-600">
-                        Rs. {product.price}
+                        Rs. {product.price ?? "N/A"}
                       </span>
+
+                      <button
+                        type="button"
+                        className="text-sm font-semibold text-black border px-2 py-1.5 rounded-lg hover:text-white hover:bg-green-600"
+                      >
+                        Add to Cart
+                      </button>
                     </div>
 
+                    {/* View Product */}
                     <button
+                      type="button"
                       className="mt-5 w-full rounded-xl bg-green-600 py-3 font-semibold text-white transition hover:bg-green-700"
                     >
-                      Add To Cart
+                      View Product
                     </button>
-
                   </div>
                 </div>
-
               ))}
 
             </div>
-
           ) : (
-
             <div className="py-12 text-center">
               <p className="text-lg font-semibold text-gray-700">
                 No products found.
@@ -173,11 +193,9 @@ function ProductGrid({ activeCategory = "All", search = "" }) {
                 Try another product name or select a different category.
               </p>
             </div>
-
           )}
         </>
       )}
-
     </section>
   );
 }
