@@ -21,7 +21,7 @@ const createProduct = async (req, res) => {
     }
 };
 
-// Get All Products
+
 // Get All Products
 const getAllProducts = async (req, res) => {
     try {
