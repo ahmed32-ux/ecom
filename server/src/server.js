@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const authRoute = require("../routes/authRoutes");
 const productRoute = require ("../routes/productRoutes")
 const categoryRoute = require ("../routes/categoryRoutes");
-
+const cartRoute = require ("../routes/cartRoutes")
 
 
 // Create Express App
@@ -19,6 +19,7 @@ app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/product", productRoute);
 app.use("/api/categories", categoryRoute);
+app.use("api/cart", cartRoute);
 
 // DOT ENV
 const PORT = process.env.PORT || 5000;
