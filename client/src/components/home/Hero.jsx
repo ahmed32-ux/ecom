@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Hero() {
   return (
-    <section className="mx-auto max-w-7xl px-1 m-[-40] py-8 sm:py-12">
+    <section className="mx-auto max-w-7xl px-1 -mt-[4vh] py-8 sm:py-12">
       <div className="relative overflow-hidden rounded-3xl bg-gray-50 px-6 py-12 sm:px-10 sm:py-16 lg:px-16 lg:py-20">
         {/* Decorative Background */}
         <div className="absolute -right-20 -top-24 h-70 w-72 rounded-full bg-green-100/90 blur-3xl" />

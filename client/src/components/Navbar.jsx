@@ -1,19 +1,38 @@
 
+import { useEffect } from "react";
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-function Navbar({ search = "", setSearch = () => {} }) {
+function Navbar({ search = "", setSearch = () => { } }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cartCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
   const navLinkClass = ({ isActive }) =>
-    `transition-colors duration-200 ${
-      isActive
-        ? "font-semibold text-green-600"
-        : "text-gray-600 hover:text-green-600"
+    `transition-colors duration-200 ${isActive
+      ? "font-semibold text-green-600"
+      : "text-gray-600 hover:text-green-600"
     }`;
+
+  useEffect(() => {
+    const loadCart = async () => {
+      if (!userId) {
+        return setCartCount(0);
+      }
+
+      try {
+        const res = await api.get(`/cart/${userId}`);
+
+        setCartCount(res.data.items.length);
+      } catch (error) {
+        console.error("Cart loading error:", error);
+      }
+    };
+
+    loadCart();
+  }, [userId]);
+
 
   const closeMenu = () => setMenuOpen(false);
 

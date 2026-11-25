@@ -15,6 +15,7 @@ import AddCategory from './Admin/AddCategory'
 import CategoryList from './Admin/CategoryList'
 import Categories from './components/Categories'
 import Products from './components/Products'
+import Cart from './components/Cart'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/products" element={<Products />} />
+      <Route path="/cart" element={<Cart />} />
 
       {/* Authentication */}
       <Route path="/signup" element={<Signup />} />
