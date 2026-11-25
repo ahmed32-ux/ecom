@@ -12,7 +12,7 @@ const categoryInfo = {
         image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=800&q=80",
     },
     Fashion: {
-        description: "Find styles that fit your everyday life.",
+        description: "Find styles that fit your everyday life.", 
         image: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=80",
     },
     "Home & Living": {
@@ -124,7 +124,7 @@ function Categories() {
                 <section className="mt-7 border-b border-gray-100 bg-white">
                     <div className="mx-auto max-w-7xl rounded-2xl bg-green-50 px-5 py-14 sm:px-6 md:py-16 lg:px-8">
 
-                        <div className="max-w-2xl rounded-xl border-y border-white py-4">
+                        <div className="max-w-2xl rounded-xl border border-white px-5 py-4">
                             <p className="mb-3 text-sm font-medium text-green-600">
                                 Explore MyStore
                             </p>
@@ -204,9 +204,9 @@ function Categories() {
                                         <div className="h-5 w-1/3 animate-pulse rounded bg-gray-100" />
                                     </div>
                                 </div>
-                            ))}
+                            ))};
                         </div>
-                    )}
+                    )};
 
                     {/* Error */}
                     {!loading && error && (
@@ -227,7 +227,7 @@ function Categories() {
                                 Try Again
                             </button>
                         </div>
-                    )}
+                    )};
 
                     {/* Categories Grid */}
                     {!loading && !error && filteredCategories.length > 0 && (

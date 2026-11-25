@@ -135,7 +135,7 @@ function Products() {
                 <section className="border-b border-gray-100 mt-5 gap-4">
                     <div className="mx-auto max-w-7xl px-5 py-14 sm:px-6 md:py-16 lg:px-8 bg-green-50 rounded-xl">
 
-                        <div className="max-w-2xl  px-5 border-b border-t border-white rounded-lg py-3">
+                        <div className="max-w-2xl px-5 border border-white rounded-lg py-5">
                             <p className="text-sm font-semibold tracking-wide text-green-600">
                                 Explore MyStore
                             </p>
