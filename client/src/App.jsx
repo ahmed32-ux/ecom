@@ -13,6 +13,8 @@ import About from './components/About'
 
 import AddCategory from './Admin/AddCategory'
 import CategoryList from './Admin/CategoryList'
+import Categories from './components/Categories'
+import Products from './components/Products'
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
       {/* Customer Store */}
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
+      <Route path="/categories" element={<Categories />} />
+      <Route path="/products" element={<Products />} />
 
       {/* Authentication */}
       <Route path="/signup" element={<Signup />} />
