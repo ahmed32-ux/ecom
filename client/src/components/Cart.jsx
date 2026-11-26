@@ -114,9 +114,11 @@ function Cart() {
                                         Cart Items
                                     </h2>
 
-                                    <span className="text-sm text-gray-500">
-                                        {cartItems.length} Items
-                                    </span>
+                                    {cartCount > 0 && (
+                                        <span className="text-sm text-gray-500">
+                                            {cartCount}
+                                        </span>
+                                    )};
                                 </div>
 
                                 {cartItems.map((item) => (
