@@ -234,7 +234,7 @@ function Cart() {
                                     <div className="border-t border-gray-100 pt-4">
                                         <div className="flex justify-between">
                                             <span className="font-semibold text-gray-900">
-                                                Total
+                                                Total Amount
                                             </span>
 
                                             <span className="text-xl font-bold text-green-600">
