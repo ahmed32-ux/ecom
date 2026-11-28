@@ -50,9 +50,10 @@ function Cart() {
                 <section className="mx-auto max-w-7xl px-5 py-10 sm:px-6 lg:px-8">
 
                     {/* Header */}
+
                     <div className="mb-10">
                         <p className="text-sm font-semibold text-green-600">
-                            MyStore / Shopping Cart
+                            Shopping Cart
                         </p>
 
                         <h1 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
