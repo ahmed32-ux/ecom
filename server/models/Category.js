@@ -1,6 +1,7 @@
 
 const mongoose = require("mongoose");
 
+// Cart Schema 
 const categorySchema = new mongoose.Schema(
   {
     name: {
