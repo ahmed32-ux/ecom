@@ -88,7 +88,7 @@ function Cart() {
                             </div>
 
                             <h2 className="mt-6 text-2xl font-bold text-gray-900">
-                                Your cart is empty
+                                Your cart is empty!
                             </h2>
 
                             <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-gray-500">
